@@ -19,6 +19,7 @@ import top.jingwenmc.spigotpie.common.event.SpigotEventListener;
 import top.jingwenmc.spigotpie.common.instance.PieComponent;
 import top.jingwenmc.spigotpie.common.instance.Platform;
 import top.jingwenmc.spigotpie.common.instance.Wire;
+import top.jingwenmc.spigotpie.spigot.configuration.SpigotConfigurationAdapter;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -71,14 +72,14 @@ public class SpigotCacheUpdateListener implements Listener {
     }
 
     @PieCommand(value = "pdb lang reload",bungeeCord = false,spigot = true)
-    public void reload(CommandSender sender) throws IOException, IllegalAccessException {
+    public void reload(CommandSender sender) throws Exception {
         if(!sender.hasPermission("pdb.admin")) {
             sender.sendMessage(ChatColor.RED+"[PERM] Access denied.");
             return;
         }
         langConfiguration.reloadConfig();
         PlayerLangManager.langMap = new ConcurrentHashMap<>();
-        PlayerLangManager.init(SpigotPie.getEnvironment().getWorkFolder());
+        PlayerLangManager.init(SpigotPie.getEnvironment().getWorkFolder(), SpigotConfigurationAdapter.class);
         sender.sendMessage(ChatColor.GREEN+"[PDB] Reload complete.");
     }
 }

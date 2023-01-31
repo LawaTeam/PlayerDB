@@ -6,7 +6,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import top.jingwenmc.spigotpie.common.instance.PieComponent;
 import top.jingwenmc.spigotpie.common.instance.Platform;
 import top.jingwenmc.spigotpie.spigot.SpigotPieSpigot;
+import top.jingwenmc.spigotpie.spigot.configuration.SpigotConfigurationAdapter;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -30,7 +32,13 @@ public final class PlayerDB extends JavaPlugin {
         }
         getLogger().info("[FINE] Database");
         getLogger().info("[LOAD] [Module] Language...");
-        PlayerLangManager.init(getDataFolder());
+        try {
+            PlayerLangManager.init(getDataFolder(), SpigotConfigurationAdapter.class);
+        } catch (Exception e) {
+            getLogger().warning("[FAIL] Language load failed!");
+            getLogger().warning("[FAIL] Check stacktrace to learn more!");
+            throw new RuntimeException(e);
+        }
         getLogger().info("[FINE] [Module] Language");
         getLogger().info("[FINE] PlayerDB");
     }

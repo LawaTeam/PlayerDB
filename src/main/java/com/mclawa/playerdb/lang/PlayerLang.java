@@ -23,6 +23,7 @@ public class PlayerLang {
     }
 
     public static void addMessage(String key,String defaultValue) throws IOException {
+        if(PlayerLangManager.langMap.get(null).contains(key))return;
         PlayerLangManager.langMap.get(null).set(key,defaultValue);
         PlayerLangManager.langMap.get(null).save();
     }
