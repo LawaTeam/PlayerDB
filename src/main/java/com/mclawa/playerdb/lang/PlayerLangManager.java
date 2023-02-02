@@ -25,21 +25,21 @@ public class PlayerLangManager {
     public static void init(File dataFolder,Class<? extends ConfigurationAdapter> configAdapterClass) throws Exception {
         File mainFolder = new File(dataFolder,"module_lang");
         mainFolder.mkdirs();
-        langMap.put(null,configAdapterClass.getConstructor().newInstance());
+        langMap.put("default",configAdapterClass.getConstructor().newInstance());
         try {
             new File(mainFolder,"lang_default.yml").createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        langMap.get(null).init(new File(mainFolder,"lang_default.yml"));
+        langMap.get("default").init(new File(mainFolder,"lang_default.yml"));
         for(String s : LangConfiguration.enabledLanguages) {
-            langMap.put(null,configAdapterClass.getConstructor().newInstance());
+            langMap.put("default",configAdapterClass.getConstructor().newInstance());
             try {
                 new File(mainFolder,"lang_"+s+".yml").createNewFile();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            langMap.get(null).init(new File(mainFolder,"lang_"+s+".yml"));
+            langMap.get("default").init(new File(mainFolder,"lang_"+s+".yml"));
         }
     }
 

@@ -23,9 +23,9 @@ public class PlayerLang {
     }
 
     public static void addMessage(String key,String defaultValue) throws IOException {
-        if(PlayerLangManager.langMap.get(null).contains(key))return;
-        PlayerLangManager.langMap.get(null).set(key,defaultValue);
-        PlayerLangManager.langMap.get(null).save();
+        if(PlayerLangManager.langMap.get("default").contains(key))return;
+        PlayerLangManager.langMap.get("default").set(key,defaultValue);
+        PlayerLangManager.langMap.get("default").save();
     }
 
     public static void setPlayerLang(Player player,String langKey) {
@@ -55,8 +55,8 @@ public class PlayerLang {
         if(!PlayerLangManager.langMap.containsKey(lang))fallback = true;
         if(!PlayerLangManager.langMap.get(lang).contains(key))fallback = true;
         if(fallback) {
-            return (PlayerLangManager.langMap.get(null).contains(key)) ?
-                    "[NOL]"+PlayerLangManager.langMap.get(null).get(key) : "[NOL][Error : Message Not Found]";
+            return (PlayerLangManager.langMap.get("default").contains(key)) ?
+                    "[NOL]"+PlayerLangManager.langMap.get("default").get(key) : "[NOL][Error : Message Not Found]";
         } else return (String) PlayerLangManager.langMap.get(lang).get(key);
     }
 }
