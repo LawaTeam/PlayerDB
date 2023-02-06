@@ -6,11 +6,19 @@ import com.j256.ormlite.table.DatabaseTable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +27,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PlayerData {
     @DatabaseField(columnName = "player_uuid",id = true)
     private UUID playerUUID;
+
+    @DatabaseField(index = true,unique = true)
+    private String name;
 
     @DatabaseField(columnName = "player_data",dataType = DataType.LONG_STRING)
     private String playerData;
@@ -53,5 +64,39 @@ public class PlayerData {
             sj.add(k+";"+map.get(k));
         }
         playerData = sj.toString();
+    }
+
+    public static @Nullable PlayerData fromUUID(UUID uuid) throws SQLException {
+        return PlayerDB.getPlayerDataDao().queryForId(uuid);
+    }
+
+    public static BukkitTask fromUUIDAsync(UUID uuid, DataCallback<PlayerData> callback) {
+        return new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    callback.accept(fromUUID(uuid));
+                } catch (SQLException e) {
+                    callback.fail(e);
+                }
+            }
+        }.runTaskAsynchronously(PlayerDB.getInstance());
+    }
+
+    public static @Nullable PlayerData fromName(String name) throws SQLException {
+        return PlayerDB.getPlayerDataDao().queryBuilder().where().eq("name",name).queryForFirst();
+    }
+
+    public static BukkitTask fromNameAsync(String name, DataCallback<PlayerData> callback) {
+        return new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    callback.accept(fromName(name));
+                } catch (SQLException e) {
+                    callback.fail(e);
+                }
+            }
+        }.runTaskAsynchronously(PlayerDB.getInstance());
     }
 }

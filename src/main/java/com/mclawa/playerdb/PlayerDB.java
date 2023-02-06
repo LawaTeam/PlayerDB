@@ -2,9 +2,11 @@ package com.mclawa.playerdb;
 
 import com.j256.ormlite.dao.Dao;
 import com.mclawa.playerdb.lang.PlayerLangManager;
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.jingwenmc.spigotpie.common.instance.PieComponent;
 import top.jingwenmc.spigotpie.common.instance.Platform;
+import top.jingwenmc.spigotpie.common.instance.Wire;
 import top.jingwenmc.spigotpie.spigot.SpigotPieSpigot;
 import top.jingwenmc.spigotpie.spigot.configuration.SpigotConfigurationAdapter;
 
@@ -14,6 +16,9 @@ import java.util.UUID;
 
 @PieComponent(platform = Platform.SPIGOT)
 public final class PlayerDB extends JavaPlugin {
+    @Wire
+    @Getter
+    private static PlayerDB instance;
 
     @Override
     public void onEnable() {
