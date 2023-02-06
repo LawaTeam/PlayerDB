@@ -5,6 +5,7 @@ import com.mclawa.playerdb.PlayerDB;
 import com.mclawa.playerdb.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 import top.jingwenmc.spigotpie.common.instance.PieComponent;
 import top.jingwenmc.spigotpie.common.instance.Wire;
 
@@ -46,13 +47,13 @@ public class PlayerLang {
         }.runTaskAsynchronously(playerDB);
     }
 
-    public static String getPlayerLang(Player player) {
+    public static String getPlayerLang(@Nullable Player player) {
+        if(player == null) return "default";
         return PlayerLangManager.langCache.getOrDefault(player.getUniqueId(), "default");
     }
 
     public static String getMessage(String lang,String key) {
-        boolean fallback = false;
-        if(!PlayerLangManager.langMap.containsKey(lang))fallback = true;
+        boolean fallback = !PlayerLangManager.langMap.containsKey(lang);
         if(!PlayerLangManager.langMap.get(lang).contains(key))fallback = true;
         if(fallback) {
             return (PlayerLangManager.langMap.get("default").contains(key)) ?
