@@ -47,7 +47,7 @@ public class PlayerLang {
     }
 
     public static String getPlayerLang(Player player) {
-        return PlayerLangManager.langCache.get(player.getUniqueId());
+        return PlayerLangManager.langCache.getOrDefault(player.getUniqueId(), "default");
     }
 
     public static String getMessage(String lang,String key) {
