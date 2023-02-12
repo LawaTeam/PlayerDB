@@ -1,2 +1,2 @@
 # PlayerDB
-Internal data storage util
+Universal data storage util
