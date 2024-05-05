@@ -11,6 +11,8 @@ import java.util.List;
 @PieComponent
 @ConfigurationFile("module_lang/config.yml")
 public class LangConfiguration extends BaseConfiguration {
+
     @Configuration("enabled_lang")
     public static List<String> enabledLanguages = new ArrayList<>();
+
 }

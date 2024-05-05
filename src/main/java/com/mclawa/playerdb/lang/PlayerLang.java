@@ -23,9 +23,9 @@ public class PlayerLang {
         return getMessage(getPlayerLang(player),key);
     }
 
-    public static void addMessage(String key,String defaultValue) throws IOException {
-        if(PlayerLangManager.langMap.get("default").contains(key))return;
-        PlayerLangManager.langMap.get("default").set(key,defaultValue);
+    public static void addMessage(String key, String defaultValue) throws IOException {
+        if(PlayerLangManager.langMap.get("default").contains(key)) return;
+        PlayerLangManager.langMap.get("default").set(key, defaultValue);
         PlayerLangManager.langMap.get("default").save();
     }
 
