@@ -107,36 +107,4 @@ public class PlayerData {
         }.runTaskAsynchronously(PlayerDB.getInstance());
     }
 
-    /**
-     * 获取玩家 IP 所在地的国家 (受 VPN 影响)
-     * @param player - 目标玩家
-     * @return - IP 所在地国家缩写
-     * @throws IOException - IO 异常
-     */
-    public static String getIpState(Player player) throws IOException {
-        String ip = player.getAddress().getHostString();
-        HttpURLConnection urlCon = (HttpURLConnection)new URL("https://ip2c.org/" + ip).openConnection();
-        urlCon.setDefaultUseCaches(false);
-        urlCon.setUseCaches(false);
-        urlCon.connect();
-        InputStream is = urlCon.getInputStream();
-        int c = 0;
-        StringBuilder s = new StringBuilder();
-        while((c = is.read()) != -1) s.append((char) c);
-        is.close();
-        switch(s.charAt(0))
-        {
-            case '0':
-                Bukkit.getLogger().log(Level.SEVERE, "Something wrong when get " + player.getName() + "'s IP State");
-                break;
-            case '1':
-                String[] reply = s.toString().split(";");
-                return reply[1];
-            case '2':
-                Bukkit.getLogger().log(Level.SEVERE, "Can't found " + player.getName() + "'s IP in ip2c database");
-                break;
-        }
-        return "US";
-    }
-
 }
