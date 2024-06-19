@@ -6,11 +6,17 @@ import com.j256.ormlite.table.DatabaseTable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -19,6 +25,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 @Data
 @AllArgsConstructor
@@ -99,4 +106,5 @@ public class PlayerData {
             }
         }.runTaskAsynchronously(PlayerDB.getInstance());
     }
+
 }

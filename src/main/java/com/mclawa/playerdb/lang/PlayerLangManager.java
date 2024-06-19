@@ -1,6 +1,9 @@
 package com.mclawa.playerdb.lang;
 
+import com.mclawa.playerdb.PlayerData;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import top.jingwenmc.spigotpie.common.SpigotPie;
 import top.jingwenmc.spigotpie.common.command.CommandSender;
 import top.jingwenmc.spigotpie.common.command.PieCommand;
@@ -11,21 +14,25 @@ import top.jingwenmc.spigotpie.spigot.configuration.SpigotConfigurationAdapter;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 @PieComponent
 public class PlayerLangManager {
     protected static Map<String, ConfigurationAdapter> langMap = new ConcurrentHashMap<>();
-    protected static Map<UUID,String> langCache = new ConcurrentHashMap<>();
+    protected static Map<UUID, String> langCache = new ConcurrentHashMap<>();
     @Wire
     LangConfiguration langConfiguration;
 
-    public static void init(File dataFolder,Class<? extends ConfigurationAdapter> configAdapterClass) throws Exception {
+    public static void init(File dataFolder, Class<? extends ConfigurationAdapter> configAdapterClass) throws Exception {
         File mainFolder = new File(dataFolder,"module_lang");
         mainFolder.mkdirs();
-        langMap.put("default",configAdapterClass.getConstructor().newInstance());
+        langMap.put("default",  configAdapterClass.getConstructor().newInstance());
         try {
             new File(mainFolder,"lang_default.yml").createNewFile();
         } catch (IOException e) {
@@ -33,13 +40,13 @@ public class PlayerLangManager {
         }
         langMap.get("default").init(new File(mainFolder,"lang_default.yml"));
         for(String s : LangConfiguration.enabledLanguages) {
-            langMap.put("default",configAdapterClass.getConstructor().newInstance());
+            langMap.put("default", configAdapterClass.getConstructor().newInstance());
             try {
-                new File(mainFolder,"lang_"+s+".yml").createNewFile();
+                new File(mainFolder,"lang_" + s + ".yml").createNewFile();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            langMap.get("default").init(new File(mainFolder,"lang_"+s+".yml"));
+            langMap.get("default").init(new File(mainFolder,"lang_" + s + ".yml"));
         }
     }
 
@@ -54,4 +61,5 @@ public class PlayerLangManager {
         PlayerLangManager.init(SpigotPie.getEnvironment().getWorkFolder(), SpigotConfigurationAdapter.class);
         sender.sendMessage(ChatColor.GREEN+"[PDB] Reload complete.");
     }
+
 }
