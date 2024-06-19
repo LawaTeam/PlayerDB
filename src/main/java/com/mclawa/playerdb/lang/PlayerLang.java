@@ -22,6 +22,9 @@ public class PlayerLang {
     public static String getMessage(Player player,String key) {
         return getMessage(getPlayerLang(player),key);
     }
+    public static String getMessage(UUID uuid,String key) {
+        return getMessage(getPlayerLang(uuid),key);
+    }
 
     public static void addMessage(String key, String defaultValue) throws IOException {
         if(PlayerLangManager.langMap.get("default").contains(key)) return;
@@ -30,9 +33,12 @@ public class PlayerLang {
     }
 
     public static void setPlayerLang(Player player,String langKey) {
-        PlayerLangManager.langCache.remove(player.getUniqueId());
-        PlayerLangManager.langCache.put(player.getUniqueId(),langKey);
-        UUID uuid = player.getUniqueId();
+        setPlayerLang(player.getUniqueId(),langKey);
+    }
+
+    public static void setPlayerLang(UUID uuid,String langKey) {
+        PlayerLangManager.langCache.remove(uuid);
+        PlayerLangManager.langCache.put(uuid,langKey);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -49,7 +55,12 @@ public class PlayerLang {
 
     public static String getPlayerLang(@Nullable Player player) {
         if(player == null) return "default";
-        return PlayerLangManager.langCache.getOrDefault(player.getUniqueId(), "default");
+        return getPlayerLang(player.getUniqueId());
+    }
+
+    public static String getPlayerLang(@Nullable UUID uuid) {
+        if(uuid == null) return "default";
+        return PlayerLangManager.langCache.getOrDefault(uuid, "default");
     }
 
     public static String getMessage(String lang,String key) {
