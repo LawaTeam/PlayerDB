@@ -51,6 +51,7 @@ public class SpigotCacheUpdateListener implements Listener {
                     if(selected.equalsIgnoreCase("default"))selected=null;
                     PlayerLangManager.langCache.remove(uuid);
                     PlayerLangManager.langCache.put(uuid,selected);
+                    DatabaseAccessor.getInstance().getPlayerDataDao().update(playerData);
                     new BukkitRunnable(){
                         @Override
                         public void run() {
