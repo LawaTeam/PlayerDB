@@ -45,6 +45,7 @@ public class PlayerData {
         Map<String,String> stringMap = new ConcurrentHashMap<>();
         for(String r : playerData.split(";;")) {
             String[] data = r.split(";",2);
+            if(data.length<2)continue;
             stringMap.put(data[0],data[1]);
         }
         return stringMap;

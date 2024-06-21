@@ -25,7 +25,7 @@ public final class PlayerDB extends JavaPlugin {
         // Plugin startup logic
         getLogger().info("[LOAD] PlayerDB...");
         getLogger().info("[LOAD] SpigotPie...");
-        SpigotPieSpigot.inject(this,"com.mysql","org","META-INF");
+        SpigotPieSpigot.inject(this,"com.mysql","org","META-INF","com.zaxxer");
         getLogger().info("[FINE] SpigotPie");
         getLogger().info("[LOAD] Database...");
         try {

@@ -48,7 +48,6 @@ public class SpigotCacheUpdateListener implements Listener {
                     if(!playerData.containsDataKey("lang")) playerData.setPlayerData("lang","default");
                     playerData.setName(player.getName());
                     String selected = playerData.getPlayerData("lang");
-                    if(selected.equalsIgnoreCase("default"))selected=null;
                     PlayerLangManager.langCache.remove(uuid);
                     PlayerLangManager.langCache.put(uuid,selected);
                     DatabaseAccessor.getInstance().getPlayerDataDao().update(playerData);
