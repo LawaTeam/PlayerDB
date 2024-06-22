@@ -1,15 +1,15 @@
-package com.mclawa.playerdb;
+package com.mclawa.playerdb.bungee;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.DataSourceConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.mclawa.playerdb.event.DatabaseReloadEvent;
+import com.mclawa.playerdb.DatabaseConfiguration;
+import com.mclawa.playerdb.PlayerDB;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import top.jingwenmc.spigotpie.common.instance.PieComponent;
 import top.jingwenmc.spigotpie.common.instance.Platform;
 import top.jingwenmc.spigotpie.common.instance.Wire;
@@ -19,8 +19,8 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.UUID;
 
-@PieComponent(platform = Platform.SPIGOT)
-public class DatabaseAccessor {
+@PieComponent(platform = Platform.BUNGEE_CORD)
+public class DatabaseAccessorBC {
     ConnectionSource connectionSource;
     DataSource dataSource;
 
@@ -28,11 +28,11 @@ public class DatabaseAccessor {
     PlayerDB plugin;
 
     @Getter
-    Dao<PlayerData, UUID> playerDataDao;
+    Dao<PlayerDataBC, UUID> playerDataDao;
 
     @Wire
     @Getter
-    private static DatabaseAccessor instance;
+    private static DatabaseAccessorBC instance;
 
     public void reconnect() throws SQLException {
         HikariConfig hikariConfig = new HikariConfig();
@@ -47,8 +47,7 @@ public class DatabaseAccessor {
         }
         dataSource = new HikariDataSource(hikariConfig);
         connectionSource = new DataSourceConnectionSource(dataSource, DatabaseConfiguration.mysqlUrl);
-        playerDataDao = createDao(PlayerData.class,UUID.randomUUID());
-        Bukkit.getPluginManager().callEvent(new DatabaseReloadEvent(this));
+        playerDataDao = createDao(PlayerDataBC.class,UUID.randomUUID());
     }
 
     public void close() throws Exception {

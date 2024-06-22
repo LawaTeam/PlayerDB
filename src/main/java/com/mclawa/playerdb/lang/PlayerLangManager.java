@@ -1,9 +1,6 @@
 package com.mclawa.playerdb.lang;
 
-import com.mclawa.playerdb.PlayerData;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import top.jingwenmc.spigotpie.common.SpigotPie;
 import top.jingwenmc.spigotpie.common.command.CommandSender;
 import top.jingwenmc.spigotpie.common.command.PieCommand;
@@ -14,18 +11,14 @@ import top.jingwenmc.spigotpie.spigot.configuration.SpigotConfigurationAdapter;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 @PieComponent
 public class PlayerLangManager {
-    protected static Map<String, ConfigurationAdapter> langMap = new ConcurrentHashMap<>();
-    protected static Map<UUID, String> langCache = new ConcurrentHashMap<>();
+    public static Map<String, ConfigurationAdapter> langMap = new ConcurrentHashMap<>();
+    public static Map<UUID, String> langCache = new ConcurrentHashMap<>();
     @Wire
     LangConfiguration langConfiguration;
 

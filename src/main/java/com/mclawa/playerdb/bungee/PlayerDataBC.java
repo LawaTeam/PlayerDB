@@ -1,13 +1,14 @@
-package com.mclawa.playerdb;
+package com.mclawa.playerdb.bungee;
+
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.mclawa.playerdb.DataCallback;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
+import net.md_5.bungee.api.scheduler.ScheduledTask;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @AllArgsConstructor
 @NoArgsConstructor
 @DatabaseTable(tableName = "pdb_player_data")
-public class PlayerData {
+public class PlayerDataBC {
     @DatabaseField(columnName = "player_uuid",id = true)
     private UUID playerUUID;
 
@@ -63,38 +64,32 @@ public class PlayerData {
         playerData = sj.toString();
     }
 
-    public static @Nullable PlayerData fromUUID(UUID uuid) throws SQLException {
-        return PlayerDB.getPlayerDataDao().queryForId(uuid);
+    public static @Nullable PlayerDataBC fromUUID(UUID uuid) throws SQLException {
+        return PlayerDBBC.getPlayerDataDao().queryForId(uuid);
     }
 
-    public static BukkitTask fromUUIDAsync(UUID uuid, DataCallback<PlayerData> callback) {
-        return new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    callback.accept(fromUUID(uuid));
-                } catch (SQLException e) {
-                    callback.fail(e);
-                }
+    public static ScheduledTask fromUUIDAsync(UUID uuid, DataCallback<PlayerDataBC> callback) {
+        return PlayerDBBC.getInstance().getProxy().getScheduler().runAsync(PlayerDBBC.getInstance(), () -> {
+            try {
+                callback.accept(fromUUID(uuid));
+            } catch (SQLException e) {
+                callback.fail(e);
             }
-        }.runTaskAsynchronously(PlayerDB.getInstance());
+        });
     }
 
-    public static @Nullable PlayerData fromName(String name) throws SQLException {
-        return PlayerDB.getPlayerDataDao().queryBuilder().where().eq("name",name).queryForFirst();
+    public static @Nullable PlayerDataBC fromName(String name) throws SQLException {
+        return PlayerDBBC.getPlayerDataDao().queryBuilder().where().eq("name",name).queryForFirst();
     }
 
-    public static BukkitTask fromNameAsync(String name, DataCallback<PlayerData> callback) {
-        return new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    callback.accept(fromName(name));
-                } catch (SQLException e) {
-                    callback.fail(e);
-                }
+    public static ScheduledTask fromNameAsync(String name, DataCallback<PlayerDataBC> callback) {
+        return PlayerDBBC.getInstance().getProxy().getScheduler().runAsync(PlayerDBBC.getInstance(), () -> {
+            try {
+                callback.accept(fromName(name));
+            } catch (SQLException e) {
+                callback.fail(e);
             }
-        }.runTaskAsynchronously(PlayerDB.getInstance());
+        });
     }
 
 }

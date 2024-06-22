@@ -1,0 +1,6 @@
+name: PlayerDB
+version: '${project.version}'
+main: com.mclawa.playerdb.bungee.PlayerDBBC
+authors: [ jingwenMC ]
+description: PlayerDB - Database and storage Assistant
+website: dev.mclawa.com

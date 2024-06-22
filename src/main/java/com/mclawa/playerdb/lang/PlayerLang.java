@@ -7,13 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.Nullable;
 import top.jingwenmc.spigotpie.common.instance.PieComponent;
+import top.jingwenmc.spigotpie.common.instance.Platform;
 import top.jingwenmc.spigotpie.common.instance.Wire;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.UUID;
 
-@PieComponent
+@PieComponent(platform = Platform.SPIGOT)
 public class PlayerLang {
     @Wire
     private static PlayerDB playerDB;
