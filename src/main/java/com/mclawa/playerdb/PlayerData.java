@@ -1,5 +1,7 @@
 package com.mclawa.playerdb;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -10,11 +12,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Data
 @AllArgsConstructor
@@ -31,13 +33,8 @@ public class PlayerData {
     private String playerData;
 
     public Map<String,String> getPlayerData() {
-        Map<String,String> stringMap = new ConcurrentHashMap<>();
-        for(String r : playerData.split(";;")) {
-            String[] data = r.split(";",2);
-            if(data.length<2)continue;
-            stringMap.put(data[0],data[1]);
-        }
-        return stringMap;
+        Type strMapType = new TypeToken<Map<String,String>>() {}.getType();
+        return new Gson().fromJson(playerData, strMapType);
     }
 
     public boolean containsDataKey(String key) {
@@ -56,11 +53,7 @@ public class PlayerData {
     }
 
     public void setPlayerData(Map<String,String> map) {
-        StringJoiner sj = new StringJoiner(";;");
-        for(String k : map.keySet()) {
-            sj.add(k+";"+map.get(k));
-        }
-        playerData = sj.toString();
+        playerData = new Gson().toJson(map);
     }
 
     public static @Nullable PlayerData fromUUID(UUID uuid) throws SQLException {
